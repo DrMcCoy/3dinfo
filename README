@@ -1,0 +1,8 @@
+3DInfo
+======
+
+3DInfo is just a small utility that prints out GL information collected by
+GLEW.
+
+It is licensed under the terms of the GNU General Public License version 3
+or (at your option) any later version.

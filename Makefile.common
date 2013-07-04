@@ -1,0 +1,19 @@
+AUTOMAKE_OPTIONS = subdir-objects
+
+LIBSF_C_CXX = $(THREEDINFO_CFLAGS) $(SDL_CFLAGS) $(GL_CFLAGS)
+LIBSL_C_CXX = $(THREEDINFO_LIBS) $(SDL_LIBS) $(GL_LIBS)
+
+LIBSF_CXX = $(LIBSF_C_CXX)
+LIBSL_CXX = $(LIBSL_C_CXX)
+
+# glm needs -Wno-shadow...  >:(
+FLAGS_C_CXX = -I$(top_srcdir) -I$(top_srcdir)/src/ -ggdb -Wall -Wno-multichar \
+              -Wpointer-arith -Wno-shadow $(WERROR) -DGLEW_STATIC $(LIBSF_C_CXX)
+LIBS_C_CXX  = $(LIBSL_C_CXX)
+
+AM_CXXFLAGS = $(FLAGS_C_CXX) -Wnon-virtual-dtor
+AM_CFLAGS   = $(FLAGS_C_CXX)
+
+AM_LDFLAGS = $(LIBSL_CXX)
+
+LIBS =

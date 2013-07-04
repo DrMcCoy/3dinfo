@@ -1,0 +1,35 @@
+3dinfo - Show basic information about your 3D hardware
+Copyright (c) 2013 by the following:
+
+Sven Hesse (DrMcCoy) <drmccoy@drmccoy.de>
+
+
+3dinfo is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 3
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+
+ax_check_gl.m4
+**************
+   3dinfo uses Braden McDaniel's autoconf macros
+   (<https://code.google.com/p/autoconf-gl-macros/>) to check for OpenGL,
+   licensed under version 2 or later of the GNU General Public License.
+
+glew
+****
+   3dinfo uses glew, The OpenGL Extension Wrangler Library
+   (<http://glew.sourceforge.net/>), to safely check for and use OpenGL 1.2+
+   features and extensions. To minimize dependencies on "uncommon" libraries,
+   3dinfo completely includes the glew code, one of its suggested use methods.
+   glew is licensed under the Modified BSD License, the Mesa 3-D License
+   (MIT License), and the Khronos License (MIT License).
