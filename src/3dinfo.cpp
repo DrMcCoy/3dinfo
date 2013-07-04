@@ -66,6 +66,9 @@ int main(void) {
 	CHECK_GL_VERSION("4.2", 4_2);
 	CHECK_GL_VERSION("4.3", 4_3);
 
+	if (GLEW_VERSION_2_0)
+		printf("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
 	deinit();
 	return 0;
 }
