@@ -42,10 +42,29 @@ SDL_Surface *initSize(int width, int height, bool fullscreen);
 SDL_Surface *setupSDLGL(int width, int height, int bpp, unsigned int flags);
 void deinit();
 
+#define CHECK_GL_VERSION(x, y) printf("Got OpenGL %s? %s\n", (x), (GLEW_VERSION_##y) ? "yes" : "no")
+
 int main(void) {
 	SDL_Surface *screen = 0;
 
 	screen = init(800, 600, false);
+
+	CHECK_GL_VERSION("1.1", 1_1);
+	CHECK_GL_VERSION("1.2", 1_2);
+	CHECK_GL_VERSION("1.2.1", 1_2_1);
+	CHECK_GL_VERSION("1.3", 1_3);
+	CHECK_GL_VERSION("1.4", 1_4);
+	CHECK_GL_VERSION("1.5", 1_5);
+	CHECK_GL_VERSION("2.0", 2_0);
+	CHECK_GL_VERSION("2.1", 2_1);
+	CHECK_GL_VERSION("3.0", 3_0);
+	CHECK_GL_VERSION("3.1", 3_1);
+	CHECK_GL_VERSION("3.2", 3_2);
+	CHECK_GL_VERSION("3.3", 3_3);
+	CHECK_GL_VERSION("4.0", 4_0);
+	CHECK_GL_VERSION("4.1", 4_1);
+	CHECK_GL_VERSION("4.2", 4_2);
+	CHECK_GL_VERSION("4.3", 4_3);
 
 	deinit();
 	return 0;
