@@ -68,6 +68,8 @@ int main(int argc, char **argv) {
 
 	printf("\nGLSL: %s\n", GLEW_VERSION_2_0 ? (const char *)glGetString(GL_SHADING_LANGUAGE_VERSION) : "no");
 
+	printf("\nBGRA? %s\n", GLEW_EXT_bgra ? "yes" : "no");
+
 	deinit();
 	return 0;
 }
