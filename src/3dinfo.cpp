@@ -66,8 +66,7 @@ int main(int argc, char **argv) {
 	CHECK_GL_VERSION("4.2", 4_2);
 	CHECK_GL_VERSION("4.3", 4_3);
 
-	if (GLEW_VERSION_2_0)
-		printf("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	printf("\nGLSL: %s\n", GLEW_VERSION_2_0 ? (const char *)glGetString(GL_SHADING_LANGUAGE_VERSION) : "no");
 
 	deinit();
 	return 0;
