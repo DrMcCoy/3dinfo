@@ -42,7 +42,11 @@ SDL_Surface *initSize(int width, int height, bool fullscreen);
 SDL_Surface *setupSDLGL(int width, int height, int bpp, unsigned int flags);
 void deinit();
 
+#define BOOL2STR(x) ((x) ? "yes" : "no")
+
 #define CHECK_GL_VERSION(x, y) printf("OpenGL %s?\t%s\n", (x), (GLEW_VERSION_##y) ? "yes" : "no")
+#define CHECK_GL_EXTENSION(x) printf(#x "? %s\n", BOOL2STR(x))
+#define CHECK_GL_FUNCTION(x) CHECK_GL_EXTENSION(x)
 
 int main(int argc, char **argv) {
 	SDL_Surface *screen = 0;
@@ -66,9 +70,29 @@ int main(int argc, char **argv) {
 	CHECK_GL_VERSION("4.2", 4_2);
 	CHECK_GL_VERSION("4.3", 4_3);
 
-	printf("\nGLSL: %s\n", GLEW_VERSION_2_0 ? (const char *)glGetString(GL_SHADING_LANGUAGE_VERSION) : "no");
+	const char *glsl = (const char *)glGetString(GL_SHADING_LANGUAGE_VERSION);
+	printf("\nGLSL: %s\n", glsl ? glsl : "no");
 
-	printf("\nBGRA? %s\n", GLEW_EXT_bgra ? "yes" : "no");
+	printf("\n");
+	CHECK_GL_EXTENSION(GL_NV_gpu_program4);
+	CHECK_GL_EXTENSION(GL_NV_vertex_program3);
+	CHECK_GL_EXTENSION(GL_ARB_fragment_program);
+	printf("\n");
+	CHECK_GL_EXTENSION(GL_EXT_vertex_shader);
+	CHECK_GL_EXTENSION(GL_ARB_vertex_shader);
+	CHECK_GL_EXTENSION(GL_EXT_geometry_shader4);
+	CHECK_GL_EXTENSION(GL_ARB_geometry_shader4);
+	CHECK_GL_EXTENSION(GL_EXT_Cg_shader);
+	CHECK_GL_EXTENSION(GL_EXT_gpu_shader4);
+	CHECK_GL_EXTENSION(GL_ARB_fragment_shader);
+	printf("\n");
+	CHECK_GL_FUNCTION(glCreateShader);
+	CHECK_GL_FUNCTION(glCompileShader);
+	CHECK_GL_FUNCTION(glUseProgram);
+	CHECK_GL_FUNCTION(glUniformMatrix4fv);
+
+	printf("\n");
+	CHECK_GL_EXTENSION(GLEW_EXT_bgra);
 
 	deinit();
 	return 0;
