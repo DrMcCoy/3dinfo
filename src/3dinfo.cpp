@@ -48,6 +48,7 @@ void deinit();
 #define CHECK_GL_VERSION(x, y) printf("OpenGL %s?\t%s\n", (x), (GLEW_VERSION_##y) ? "yes" : "no")
 #define CHECK_GL_EXTENSION(x) printf(#x "? %s\n", BOOL2STR(x))
 #define CHECK_GL_FUNCTION(x) CHECK_GL_EXTENSION(x)
+#define CHECK_GL_PARAM_INT(x, def) { GLint paramInt = def; glGetIntegerv(x, &paramInt); printf(#x "? %d\n", paramInt); }
 
 int main(int argc, char **argv) {
 	bool experimental = false;
@@ -121,6 +122,14 @@ int main(int argc, char **argv) {
 
 	printf("\n");
 	CHECK_GL_EXTENSION(GLEW_ARB_vertex_buffer_object);
+
+	printf("\n");
+	CHECK_GL_PARAM_INT(GL_MAX_ELEMENTS_INDICES, -1);
+	CHECK_GL_PARAM_INT(GL_MAX_ELEMENTS_VERTICES, -1);
+	CHECK_GL_PARAM_INT(GL_MAX_VARYING_COMPONENTS, -1);
+	CHECK_GL_PARAM_INT(GL_MAX_VERTEX_ATTRIBS, -1);
+	CHECK_GL_PARAM_INT(GL_MAX_VERTEX_UNIFORM_COMPONENTS, -1);
+	CHECK_GL_PARAM_INT(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS, -1);
 
 	deinit();
 	return 0;
