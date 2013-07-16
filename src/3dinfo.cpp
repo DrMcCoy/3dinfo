@@ -77,6 +77,7 @@ int main(int argc, char **argv) {
 	CHECK_GL_EXTENSION(GLEW_NV_gpu_program4);
 	CHECK_GL_EXTENSION(GLEW_NV_vertex_program3);
 	CHECK_GL_EXTENSION(GLEW_ARB_fragment_program);
+	CHECK_GL_EXTENSION(GLEW_ARB_shading_language_100);
 	printf("\n");
 	CHECK_GL_EXTENSION(GLEW_EXT_vertex_shader);
 	CHECK_GL_EXTENSION(GLEW_ARB_vertex_shader);
