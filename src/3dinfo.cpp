@@ -101,6 +101,9 @@ int main(int argc, char **argv) {
 	CHECK_GL_EXTENSION(GL_EXT_framebuffer_multisample);
 	CHECK_GL_EXTENSION(GL_EXT_packed_depth_stencil);
 
+	printf("\n");
+	CHECK_GL_EXTENSION(GL_ARB_vertex_buffer_object);
+
 	deinit();
 	return 0;
 }
