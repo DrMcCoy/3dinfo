@@ -74,17 +74,17 @@ int main(int argc, char **argv) {
 	printf("\nGLSL: %s\n", glsl ? glsl : "no");
 
 	printf("\n");
-	CHECK_GL_EXTENSION(GL_NV_gpu_program4);
-	CHECK_GL_EXTENSION(GL_NV_vertex_program3);
-	CHECK_GL_EXTENSION(GL_ARB_fragment_program);
+	CHECK_GL_EXTENSION(GLEW_NV_gpu_program4);
+	CHECK_GL_EXTENSION(GLEW_NV_vertex_program3);
+	CHECK_GL_EXTENSION(GLEW_ARB_fragment_program);
 	printf("\n");
-	CHECK_GL_EXTENSION(GL_EXT_vertex_shader);
-	CHECK_GL_EXTENSION(GL_ARB_vertex_shader);
-	CHECK_GL_EXTENSION(GL_EXT_geometry_shader4);
-	CHECK_GL_EXTENSION(GL_ARB_geometry_shader4);
-	CHECK_GL_EXTENSION(GL_EXT_Cg_shader);
-	CHECK_GL_EXTENSION(GL_EXT_gpu_shader4);
-	CHECK_GL_EXTENSION(GL_ARB_fragment_shader);
+	CHECK_GL_EXTENSION(GLEW_EXT_vertex_shader);
+	CHECK_GL_EXTENSION(GLEW_ARB_vertex_shader);
+	CHECK_GL_EXTENSION(GLEW_EXT_geometry_shader4);
+	CHECK_GL_EXTENSION(GLEW_ARB_geometry_shader4);
+	CHECK_GL_EXTENSION(GLEW_EXT_Cg_shader);
+	CHECK_GL_EXTENSION(GLEW_EXT_gpu_shader4);
+	CHECK_GL_EXTENSION(GLEW_ARB_fragment_shader);
 	printf("\n");
 	CHECK_GL_FUNCTION(glCreateShader);
 	CHECK_GL_FUNCTION(glCompileShader);
@@ -95,14 +95,14 @@ int main(int argc, char **argv) {
 	CHECK_GL_EXTENSION(GLEW_EXT_bgra);
 
 	printf("\n");
-	CHECK_GL_EXTENSION(GL_ARB_framebuffer_object);
-	CHECK_GL_EXTENSION(GL_EXT_framebuffer_object);
-	CHECK_GL_EXTENSION(GL_EXT_framebuffer_blit);
-	CHECK_GL_EXTENSION(GL_EXT_framebuffer_multisample);
-	CHECK_GL_EXTENSION(GL_EXT_packed_depth_stencil);
+	CHECK_GL_EXTENSION(GLEW_ARB_framebuffer_object);
+	CHECK_GL_EXTENSION(GLEW_EXT_framebuffer_object);
+	CHECK_GL_EXTENSION(GLEW_EXT_framebuffer_blit);
+	CHECK_GL_EXTENSION(GLEW_EXT_framebuffer_multisample);
+	CHECK_GL_EXTENSION(GLEW_EXT_packed_depth_stencil);
 
 	printf("\n");
-	CHECK_GL_EXTENSION(GL_ARB_vertex_buffer_object);
+	CHECK_GL_EXTENSION(GLEW_ARB_vertex_buffer_object);
 
 	deinit();
 	return 0;
