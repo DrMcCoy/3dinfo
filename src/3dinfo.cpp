@@ -94,6 +94,13 @@ int main(int argc, char **argv) {
 	printf("\n");
 	CHECK_GL_EXTENSION(GLEW_EXT_bgra);
 
+	printf("\n");
+	CHECK_GL_EXTENSION(GL_ARB_framebuffer_object);
+	CHECK_GL_EXTENSION(GL_EXT_framebuffer_object);
+	CHECK_GL_EXTENSION(GL_EXT_framebuffer_blit);
+	CHECK_GL_EXTENSION(GL_EXT_framebuffer_multisample);
+	CHECK_GL_EXTENSION(GL_EXT_packed_depth_stencil);
+
 	deinit();
 	return 0;
 }
