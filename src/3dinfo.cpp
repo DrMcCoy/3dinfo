@@ -36,9 +36,10 @@
 
 #define ARRAYSIZE(x) ((int)(sizeof(x) / sizeof(x[0])))
 
+void dispHelp(const char *name);
 
-SDL_Surface *init(int width, int height, bool fullscreen);
-SDL_Surface *initSize(int width, int height, bool fullscreen);
+SDL_Surface *init(int width, int height, bool fullscreen, bool experimental);
+SDL_Surface *initSize(int width, int height, bool fullscreen, bool experimental);
 SDL_Surface *setupSDLGL(int width, int height, int bpp, unsigned int flags);
 void deinit();
 
@@ -49,9 +50,21 @@ void deinit();
 #define CHECK_GL_FUNCTION(x) CHECK_GL_EXTENSION(x)
 
 int main(int argc, char **argv) {
+	bool experimental = false;
+
+	if (argc > 1) {
+		if (!strcmp(argv[1], "--help") || !strcmp(argv[1], "-h")) {
+			dispHelp(argv[0]);
+			return 0;
+		}
+
+		if (!strcmp(argv[1], "--experimental") || !strcmp(argv[1], "-x"))
+			experimental = true;
+	}
+
 	SDL_Surface *screen = 0;
 
-	screen = init(800, 600, false);
+	screen = init(800, 600, false, experimental);
 
 	CHECK_GL_VERSION("1.1", 1_1);
 	CHECK_GL_VERSION("1.2", 1_2);
@@ -113,21 +126,28 @@ int main(int argc, char **argv) {
 	return 0;
 }
 
-SDL_Surface *init(int width, int height, bool fullscreen) {
+void dispHelp(const char *name) {
+	printf("Usage: %s [option]\n\n", name);
+	printf("  -h      --help           This text\n");
+	printf("  -x      --experimental   Report on experimental driver features\n");
+	printf("\n");
+}
+
+SDL_Surface *init(int width, int height, bool fullscreen, bool experimental) {
 	if ((width <= 0) || (height <= 0))
 		throw std::runtime_error("Invalid dimensions");
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		throw std::runtime_error(SDL_GetError());
 
-	SDL_Surface *screen = initSize(width, height, fullscreen);
+	SDL_Surface *screen = initSize(width, height, fullscreen, experimental);
 	if (!screen)
 		throw std::runtime_error(std::string("Failed setting the video mode: ") + SDL_GetError());
 
 	return screen;
 }
 
-SDL_Surface *initSize(int width, int height, bool fullscreen) {
+SDL_Surface *initSize(int width, int height, bool fullscreen, bool experimental) {
 	int bpp = SDL_GetVideoInfo()->vfmt->BitsPerPixel;
 	if ((bpp != 16) && (bpp != 24) && (bpp != 32))
 		throw std::runtime_error("Need 16, 24 or 32 bits per pixel");
@@ -155,6 +175,7 @@ SDL_Surface *initSize(int width, int height, bool fullscreen) {
 	if (!screen)
 		return 0;
 
+	glewExperimental = experimental;
 	GLenum glewError = glewInit();
 	if (glewError != GLEW_OK)
 		return 0;
