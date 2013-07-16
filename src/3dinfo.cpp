@@ -93,6 +93,10 @@ int main(int argc, char **argv) {
 
 	printf("\n");
 	CHECK_GL_EXTENSION(GLEW_EXT_bgra);
+	CHECK_GL_EXTENSION(GLEW_ARB_texture_non_power_of_two);
+	CHECK_GL_EXTENSION(GLEW_ARB_texture_rectangle);
+	CHECK_GL_EXTENSION(GLEW_EXT_texture_rectangle);
+	CHECK_GL_EXTENSION(GLEW_NV_texture_rectangle);
 
 	printf("\n");
 	CHECK_GL_EXTENSION(GLEW_ARB_framebuffer_object);
