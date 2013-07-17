@@ -1,6 +1,6 @@
-/* Akachi - A small self-contained 3D engine
+/* 3DInfo - Print information about your graphics hardware.
  *
- * Akachi is the legal property of its developers, whose names can be
+ * 3DInfo is the legal property of its developers, whose labels can be
  * found in the AUTHORS file distributed with this source
  * distribution.
  *
@@ -19,15 +19,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-/** @file akachitest.cpp
- *  Sample testing framework for the Akachi engine.
+/** @file 3dinfo.cpp
+ *  Print information about your graphics hardware.
  */
 
+#include <cassert>
 #include <stdexcept>
+#include <list>
 
 #include <SDL.h>
 
 #include "glew/glew.h"
+
+#include "capability.h"
 
 
 #ifdef ARRAYSIZE
@@ -43,102 +47,165 @@ SDL_Surface *initSize(int width, int height, bool fullscreen, bool experimental)
 SDL_Surface *setupSDLGL(int width, int height, int bpp, unsigned int flags);
 void deinit();
 
-#define BOOL2STR(x) ((x) ? "yes" : "no")
+void getCapabilities(std::list<Capability> &caps);
+void displayCapabilities(std::list<Capability> &capsNormal, std::list<Capability> &capsExp);
 
-#define CHECK_GL_VERSION(x, y) printf("OpenGL %s?\t%s\n", (x), (GLEW_VERSION_##y) ? "yes" : "no")
-#define CHECK_GL_EXTENSION(x) printf(#x "? %s\n", BOOL2STR(x))
+int getGLParamInt(GLenum param, GLint def) {
+	glGetIntegerv(param, &def);
+	return def;
+}
+
+#define CHECK_GL_VERSION(x, y) (x), ((bool)GLEW_VERSION_##y)
+#define CHECK_GL_EXTENSION(x) (#x "?"), ((bool)x)
 #define CHECK_GL_FUNCTION(x) CHECK_GL_EXTENSION(x)
-#define CHECK_GL_PARAM_INT(x, def) { GLint paramInt = def; glGetIntegerv(x, &paramInt); printf(#x "? %d\n", paramInt); }
+#define CHECK_GL_PARAM_INT(x, def) (#x "?"), getGLParamInt(x, def)
 
 int main(int argc, char **argv) {
-	bool experimental = false;
-
-	if (argc > 1) {
-		if (!strcmp(argv[1], "--help") || !strcmp(argv[1], "-h")) {
+	for (int i = 1; i < argc; i++) {
+		if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")) {
 			dispHelp(argv[0]);
 			return 0;
 		}
 
-		if (!strcmp(argv[1], "--experimental") || !strcmp(argv[1], "-x"))
-			experimental = true;
+		// Unknown parameter
+		dispHelp(argv[0]);
+		return -1;
 	}
 
-	SDL_Surface *screen = 0;
 
-	screen = init(800, 600, false, experimental);
+	std::list<Capability> _capNormal;
+	init(800, 600, false, false);
+	getCapabilities(_capNormal);
 
-	CHECK_GL_VERSION("1.1", 1_1);
-	CHECK_GL_VERSION("1.2", 1_2);
-	CHECK_GL_VERSION("1.2.1", 1_2_1);
-	CHECK_GL_VERSION("1.3", 1_3);
-	CHECK_GL_VERSION("1.4", 1_4);
-	CHECK_GL_VERSION("1.5", 1_5);
-	CHECK_GL_VERSION("2.0", 2_0);
-	CHECK_GL_VERSION("2.1", 2_1);
-	CHECK_GL_VERSION("3.0", 3_0);
-	CHECK_GL_VERSION("3.1", 3_1);
-	CHECK_GL_VERSION("3.2", 3_2);
-	CHECK_GL_VERSION("3.3", 3_3);
-	CHECK_GL_VERSION("4.0", 4_0);
-	CHECK_GL_VERSION("4.1", 4_1);
-	CHECK_GL_VERSION("4.2", 4_2);
-	CHECK_GL_VERSION("4.3", 4_3);
+	std::list<Capability> _capExperimental;
+	init(800, 600, false, true);
+	getCapabilities(_capExperimental);
 
-	const char *glsl = (const char *)glGetString(GL_SHADING_LANGUAGE_VERSION);
-	printf("\nGLSL: %s\n", glsl ? glsl : "no");
-
-	printf("\n");
-	CHECK_GL_EXTENSION(GLEW_NV_gpu_program4);
-	CHECK_GL_EXTENSION(GLEW_NV_vertex_program3);
-	CHECK_GL_EXTENSION(GLEW_ARB_fragment_program);
-	CHECK_GL_EXTENSION(GLEW_ARB_shading_language_100);
-	printf("\n");
-	CHECK_GL_EXTENSION(GLEW_EXT_vertex_shader);
-	CHECK_GL_EXTENSION(GLEW_ARB_vertex_shader);
-	CHECK_GL_EXTENSION(GLEW_EXT_geometry_shader4);
-	CHECK_GL_EXTENSION(GLEW_ARB_geometry_shader4);
-	CHECK_GL_EXTENSION(GLEW_EXT_Cg_shader);
-	CHECK_GL_EXTENSION(GLEW_EXT_gpu_shader4);
-	CHECK_GL_EXTENSION(GLEW_ARB_fragment_shader);
-	printf("\n");
-	CHECK_GL_FUNCTION(glCreateShader);
-	CHECK_GL_FUNCTION(glCompileShader);
-	CHECK_GL_FUNCTION(glUseProgram);
-	CHECK_GL_FUNCTION(glUniformMatrix4fv);
-
-	printf("\n");
-	CHECK_GL_EXTENSION(GLEW_EXT_bgra);
-	CHECK_GL_EXTENSION(GLEW_ARB_texture_non_power_of_two);
-	CHECK_GL_EXTENSION(GLEW_ARB_texture_rectangle);
-	CHECK_GL_EXTENSION(GLEW_EXT_texture_rectangle);
-	CHECK_GL_EXTENSION(GLEW_NV_texture_rectangle);
-
-	printf("\n");
-	CHECK_GL_EXTENSION(GLEW_ARB_framebuffer_object);
-	CHECK_GL_EXTENSION(GLEW_EXT_framebuffer_object);
-	CHECK_GL_EXTENSION(GLEW_EXT_framebuffer_blit);
-	CHECK_GL_EXTENSION(GLEW_EXT_framebuffer_multisample);
-	CHECK_GL_EXTENSION(GLEW_EXT_packed_depth_stencil);
-
-	printf("\n");
-	CHECK_GL_EXTENSION(GLEW_ARB_vertex_buffer_object);
-
-	printf("\n");
-	CHECK_GL_PARAM_INT(GL_MAX_ELEMENTS_INDICES, -1);
-	CHECK_GL_PARAM_INT(GL_MAX_ELEMENTS_VERTICES, -1);
-	CHECK_GL_PARAM_INT(GL_MAX_VARYING_COMPONENTS, -1);
-	CHECK_GL_PARAM_INT(GL_MAX_VERTEX_ATTRIBS, -1);
-	CHECK_GL_PARAM_INT(GL_MAX_VERTEX_UNIFORM_COMPONENTS, -1);
-	CHECK_GL_PARAM_INT(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS, -1);
+	displayCapabilities(_capNormal, _capExperimental);
 
 	deinit();
 	return 0;
 }
 
+void getCapabilities(std::list<Capability> &caps) {
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 1.1?",   1_1)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 1.2?",   1_2)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 1.2.1?", 1_2_1)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 1.3?",   1_3)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 1.4?",   1_4)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 1.5?",   1_5)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 2.0?",   2_0)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 2.1?",   2_1)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 3.0?",   3_0)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 3.1?",   3_1)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 3.2?",   3_2)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 3.3?",   3_3)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 4.0?",   4_0)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 4.1?",   4_1)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 4.2?",   4_2)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 4.3?",   4_3)));
+
+	caps.push_back(Capability());
+
+	caps.push_back(Capability("GLSL:", std::string((const char *)glGetString(GL_SHADING_LANGUAGE_VERSION))));
+
+	caps.push_back(Capability());
+
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_NV_gpu_program4)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_NV_vertex_program3)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_ARB_fragment_program)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_ARB_shading_language_100)));
+
+	caps.push_back(Capability());
+
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_EXT_vertex_shader)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_ARB_vertex_shader)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_EXT_geometry_shader4)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_ARB_geometry_shader4)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_EXT_Cg_shader)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_EXT_gpu_shader4)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_ARB_fragment_shader)));
+
+	caps.push_back(Capability());
+
+	caps.push_back(Capability(CHECK_GL_FUNCTION(glCreateShader)));
+	caps.push_back(Capability(CHECK_GL_FUNCTION(glCompileShader)));
+	caps.push_back(Capability(CHECK_GL_FUNCTION(glUseProgram)));
+	caps.push_back(Capability(CHECK_GL_FUNCTION(glUniformMatrix4fv)));
+
+	caps.push_back(Capability());
+
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_EXT_bgra)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_ARB_texture_non_power_of_two)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_ARB_texture_rectangle)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_EXT_texture_rectangle)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_NV_texture_rectangle)));
+
+	caps.push_back(Capability());
+
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_ARB_framebuffer_object)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_EXT_framebuffer_object)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_EXT_framebuffer_blit)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_EXT_framebuffer_multisample)));
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_EXT_packed_depth_stencil)));
+
+	caps.push_back(Capability());
+
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_ARB_vertex_buffer_object)));
+
+	caps.push_back(Capability());
+
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_ELEMENTS_INDICES, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_ELEMENTS_VERTICES, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_VARYING_COMPONENTS, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_VERTEX_ATTRIBS, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_VERTEX_UNIFORM_COMPONENTS, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS, -1)));
+}
+
+void displayCapabilities(std::list<Capability> &capsNormal, std::list<Capability> &capsExp) {
+	std::list<Capability>::iterator cN, cE;
+
+	unsigned int maxLength = 0;
+	for (cN = capsNormal.begin(); cN != capsNormal.end(); ++cN)
+		maxLength = (cN->getLabel().size() > maxLength) ? cN->getLabel().size() : maxLength;
+
+	for (cN = capsNormal.begin(), cE = capsExp.begin(); cN != capsNormal.end() && cE != capsExp.end(); ++cN, ++cE) {
+		assert(cN->getLabel() == cE->getLabel());
+		assert(cN->getType() == cE->getType());
+
+		printf("%-*s", maxLength, cN->getLabel().c_str());
+
+		if (cN->getType() == kTypeBool) {
+
+			if      (cE->getBool() && !cN->getBool())
+				printf(" experimental");
+			else if (!cE->getBool() && cN->getBool())
+				printf(" deprecated");
+			else if (cE->getBool())
+				printf(" yes");
+			else if (!cE->getBool())
+				printf(" no");
+
+		} else if (cN->getType() == kTypeInt) {
+			if (cN->getInt() == cE->getInt())
+				printf(" %d", cN->getInt());
+			else
+				printf(" %d (%d)", cN->getInt(), cE->getInt());
+		} else if (cN->getType() == kTypeString) {
+			if (cN->getString() == cE->getString())
+				printf(" %s", cN->getString().c_str());
+			else
+				printf(" %s (%s)", cN->getString().c_str(), cE->getString().c_str());
+		}
+
+		printf("\n");
+	}
+}
+
 void dispHelp(const char *name) {
 	printf("Usage: %s [option]\n\n", name);
 	printf("  -h      --help           This text\n");
-	printf("  -x      --experimental   Report on experimental driver features\n");
 	printf("\n");
 }
 
