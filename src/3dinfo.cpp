@@ -161,6 +161,22 @@ void getCapabilities(std::list<Capability> &caps) {
 	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_VERTEX_ATTRIBS, -1)));
 	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_VERTEX_UNIFORM_COMPONENTS, -1)));
 	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS, -1)));
+
+	caps.push_back(Capability());
+
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_ATI_meminfo)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_VBO_FREE_MEMORY_ATI, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_TEXTURE_FREE_MEMORY_ATI, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_RENDERBUFFER_FREE_MEMORY_ATI, -1)));
+
+	caps.push_back(Capability());
+
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_NVX_gpu_memory_info)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_GPU_MEMORY_INFO_EVICTION_COUNT_NVX, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX, -1)));
 }
 
 void displayCapabilities(std::list<Capability> &capsNormal, std::list<Capability> &capsExp) {
