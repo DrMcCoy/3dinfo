@@ -108,7 +108,10 @@ void getCapabilities(std::list<Capability> &caps) {
 
 	caps.push_back(Capability());
 
-	caps.push_back(Capability("GLSL:", std::string((const char *)glGetString(GL_SHADING_LANGUAGE_VERSION))));
+	caps.push_back(Capability("Vendor:"  , std::string((const char *)glGetString(GL_VENDOR))));
+	caps.push_back(Capability("Renderer:", std::string((const char *)glGetString(GL_RENDERER))));
+	caps.push_back(Capability("Version:" , std::string((const char *)glGetString(GL_VERSION))));
+	caps.push_back(Capability("GLSL:"    , std::string((const char *)glGetString(GL_SHADING_LANGUAGE_VERSION))));
 
 	caps.push_back(Capability());
 
