@@ -59,45 +59,8 @@ AC_CHECK_FUNCS([fabsf])
 AC_CHECK_FUNCS([fminf])
 AC_CHECK_FUNCS([fmaxf])
 
-dnl SDL
-AC_CHECK_PROG([SDL_CONFIG], [sdl-config], [sdl-config])
-
-if test -n "$SDL_CONFIG"; then
-	if test -z "$SDL_CFLAGS"; then
-		SDL_CFLAGS=`$SDL_CONFIG --cflags`
-	fi
-	if test -z "$SDL_LIBS"; then
-		SDL_LIBS=`$SDL_CONFIG --libs`
-	fi
-fi
-
-save_LIBS="$LIBS"
-LIBS="$LIBS $SDL_LIBS"
-AC_CHECK_FUNC(SDL_Init, , AC_CHECK_LIB(SDL, SDL_Init, SDL_LIBS="$SDL_LIBS -lSDL", nosdl=1))
-LIBS="$save_LIBS"
-
-if test -n "$nosdl"; then
-	AC_MSG_ERROR([SDL is required and could not be found!])
-fi
-
-dnl OpenGL
-case "$target" in
-	*darwin*)
-		dnl Do not run the OpenGL checks on OS X, they will incorrectly find the X11
-		dnl OpenGL libraries which we do not want.
-		dnl TODO: Eventually add a test for OS X for OpenGL
-
-		GL_CFLAGS=""
-		GL_LIBS="-framework OpenGL"
-		;;
-	*)
-		AX_CHECK_GL
-
-		if test -n "$no_gl"; then
-			AC_MSG_ERROR([OpenGL is required and could not be found!])
-		fi
-		;;
-esac;
+AX_CHECK_SDL(1200, , AC_MSG_ERROR([SDL (>= 1.2.0) is required and could not be found!]))
+AX_CHECK_GL( , AC_MSG_ERROR([OpenGL is required and could not be found!]))
 
 dnl Extra flags
 case "$target" in
@@ -114,12 +77,6 @@ case "$target" in
 		THREEDINFO_LIBS=""
 		;;
 esac;
-
-AC_SUBST(SDL_LIBS)
-AC_SUBST(SDL_CFLAGS)
-
-AC_SUBST(GL_CFLAGS)
-AC_SUBST(GL_LIBS)
 
 AC_SUBST(THREEDINFO_CFLAGS)
 AC_SUBST(THREEDINFO_LIBS)

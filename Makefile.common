@@ -1,19 +1,21 @@
 AUTOMAKE_OPTIONS = subdir-objects
 
+EMPTY =
+
 LIBSF_C_CXX = $(THREEDINFO_CFLAGS) $(SDL_CFLAGS) $(GL_CFLAGS)
-LIBSL_C_CXX = $(THREEDINFO_LIBS) $(SDL_LIBS) $(GL_LIBS)
+LIBSF_CXX   =
 
-LIBSF_CXX = $(LIBSF_C_CXX)
-LIBSL_CXX = $(LIBSL_C_CXX)
+LIBSL       = $(THREEDINFO_LIBS) $(SDL_LIBS) $(GL_LIBS)
 
-# glm needs -Wno-shadow...  >:(
-FLAGS_C_CXX = -I$(top_srcdir) -I$(top_srcdir)/src/ -ggdb -Wall -Wno-multichar \
-              -Wpointer-arith -Wno-shadow $(WERROR) -DGLEW_STATIC $(LIBSF_C_CXX)
-LIBS_C_CXX  = $(LIBSL_C_CXX)
+FLAGS_C_CXX = -I$(top_srcdir) -ggdb -Wall -Wno-multichar \
+              -Wignored-qualifiers \
+              -Wpointer-arith -Wshadow -Wsign-compare -Wtype-limits \
+              -Wuninitialized -Wunused-parameter $(WERROR) -DGLEW_STATIC
+FLAGS_C     =
+FLAGS_CXX   = -Wnon-virtual-dtor -Wno-overloaded-virtual
 
-AM_CXXFLAGS = $(FLAGS_C_CXX) -Wnon-virtual-dtor
-AM_CFLAGS   = $(FLAGS_C_CXX)
-
-AM_LDFLAGS = $(LIBSL_CXX)
+AM_CFLAGS   = $(FLAGS_C_CXX) $(FLAGS_C)   $(LIBSF_C_CXX) $(LIBSF_C)
+AM_CXXFLAGS = $(FLAGS_C_CXX) $(FLAGS_CXX) $(LIBSF_C_CXX) $(LIBSF_CXX)
+LDADD       = $(LIBSL)
 
 LIBS =
