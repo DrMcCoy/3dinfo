@@ -169,6 +169,13 @@ void getCapabilities(std::list<Capability> &caps) {
 
 	caps.push_back(Capability());
 
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_TEXTURE_UNITS, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_TEXTURE_IMAGE_UNITS, -1)));
+
+	caps.push_back(Capability());
+
 	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_ATI_meminfo)));
 	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_VBO_FREE_MEMORY_ATI, -1)));
 	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_TEXTURE_FREE_MEMORY_ATI, -1)));
