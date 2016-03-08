@@ -188,6 +188,16 @@ void getCapabilities(std::list<Capability> &caps) {
 	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, -1)));
 	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_GPU_MEMORY_INFO_EVICTION_COUNT_NVX, -1)));
 	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX, -1)));
+
+	caps.push_back(Capability());
+
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_ARB_debug_output)));
+	caps.push_back(Capability(CHECK_GL_FUNCTION(glDebugMessageCallbackARB)));
+	caps.push_back(Capability(CHECK_GL_FUNCTION(glDebugMessageControlARB)));
+	caps.push_back(Capability(CHECK_GL_FUNCTION(glDebugMessageInsertARB)));
+	caps.push_back(Capability(CHECK_GL_FUNCTION(glGetDebugMessageLogARB)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_DEBUG_MESSAGE_LENGTH_ARB, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_DEBUG_LOGGED_MESSAGES_ARB, -1)));
 }
 
 void displayCapabilities(std::list<Capability> &capsNormal, std::list<Capability> &capsExp) {
