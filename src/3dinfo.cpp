@@ -172,6 +172,7 @@ void getCapabilities(std::list<Capability> &caps) {
 	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, -1)));
 	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, -1)));
 	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_TEXTURE_IMAGE_UNITS, -1)));
+	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_MAX_TEXTURE_COORDS, -1)));
 
 	caps.push_back(Capability());
 
