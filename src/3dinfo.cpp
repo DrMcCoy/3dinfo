@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
 
 		// Unknown parameter
 		dispHelp(argv[0]);
-		return -1;
+		return 1;
 	}
 
 
