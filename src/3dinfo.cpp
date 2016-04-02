@@ -71,18 +71,24 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
+	try {
+		std::list<Capability> _capNormal;
+		init(800, 600, false, false);
+		getCapabilities(_capNormal);
 
-	std::list<Capability> _capNormal;
-	init(800, 600, false, false);
-	getCapabilities(_capNormal);
+		std::list<Capability> _capExperimental;
+		init(800, 600, false, true);
+		getCapabilities(_capExperimental);
 
-	std::list<Capability> _capExperimental;
-	init(800, 600, false, true);
-	getCapabilities(_capExperimental);
+		displayCapabilities(_capNormal, _capExperimental);
 
-	displayCapabilities(_capNormal, _capExperimental);
+		deinit();
 
-	deinit();
+	} catch (std::exception &e) {
+		fprintf(stderr, "ERROR: %s!\n", e.what());
+		return 2;
+	}
+
 	return 0;
 }
 
