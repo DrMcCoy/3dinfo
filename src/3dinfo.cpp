@@ -182,6 +182,12 @@ void getCapabilities(std::list<Capability> &caps) {
 
 	caps.push_back(Capability());
 
+	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_EXT_texture_compression_s3tc)));
+	caps.push_back(Capability(CHECK_GL_FUNCTION(glCompressedTexImage2D)));
+	caps.push_back(Capability(CHECK_GL_FUNCTION(glCompressedTexImage2DARB)));
+
+	caps.push_back(Capability());
+
 	caps.push_back(Capability(CHECK_GL_EXTENSION(GLEW_ATI_meminfo)));
 	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_VBO_FREE_MEMORY_ATI, -1)));
 	caps.push_back(Capability(CHECK_GL_PARAM_INT(GL_TEXTURE_FREE_MEMORY_ATI, -1)));
