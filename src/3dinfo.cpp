@@ -111,6 +111,7 @@ void getCapabilities(std::list<Capability> &caps) {
 	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 4.3?",   4_3)));
 	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 4.4?",   4_4)));
 	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 4.5?",   4_5)));
+	caps.push_back(Capability(CHECK_GL_VERSION("OpenGL 4.6?",   4_6)));
 
 	caps.push_back(Capability());
 
